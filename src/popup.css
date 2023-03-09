@@ -1,0 +1,49 @@
+body {
+    margin: 0;
+    width: 200px;
+    height: 120px;
+}
+
+label {
+    cursor: pointer;
+}
+
+.container {
+    text-align: center;
+}
+
+.controls {
+    margin-top: 20px;
+}
+
+.controls .button + .button {
+    margin-left: 5px;
+}
+
+.button {
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    height: auto;
+    padding: 2px 16px;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 20px;
+    outline: none;
+    text-shadow: none;
+    background-color: #ffffff;
+    border-color: #0070BF;
+    color: #0070BF;
+}
+
+.button:hover {
+    background-color: #D9EFFF;
+    border-color: #0070BF;
+    color: #0070BF;
+}
+
+.button:active {
+    background-color: #a6daff;
+    border-color: #0070BF;
+    color: #0070BF;
+}

@@ -1,0 +1,22 @@
+{
+    "name": "Jira Standup Extension",
+    "description": "Chrome Extension for running standup within Jira!",
+    "manifest_version": 3,
+    "version": "1.0.0",
+    "action": {
+      "default_popup": "popup.html"
+    },
+    "content_scripts": [
+      {
+        "matches": [
+          "https://*.atlassian.net/jira/software/c/projects/*/boards/*"
+        ],
+        "js": [
+          "content.js"
+        ]
+      }
+    ],
+    "permissions": [
+      "storage"
+    ]
+  }
