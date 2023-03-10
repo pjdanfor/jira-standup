@@ -91,14 +91,14 @@ const ContentApp = () => {
             setHidden(!enabledResult.enabled);
 
             const attendeesResult = await chrome.storage.local.get("attendees");
-            let attendees = attendeesResult.attendees;
-            if (!attendees) {
-                attendees = attendeesJson.map(a => ({
+            let storageAttendees = attendeesResult.attendees;
+            if (!storageAttendees) {
+                storageAttendees = attendeesJson.map(a => ({
                     ...a,
                     satDown: false
                 }));
             }
-            setAttendees(attendees);
+            setAttendees(storageAttendees);
         })();
     }, []);
 
