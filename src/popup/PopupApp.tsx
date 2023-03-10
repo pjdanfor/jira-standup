@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { MessageTypes } from "./types";
+import { MessageTypes } from "../types";
 
 type CheckboxProps = {
     checked: boolean
@@ -49,6 +49,11 @@ const PopupApp = () => {
         sendMessage({ type: "CLEAR" });
     };
 
+    const handleOnReload = () => {
+        chrome.storage.local.set({ attendees: null });
+        chrome.runtime.reload();
+    };
+
     return (
         <div className="container">
             <h2>Jira Standup 👋</h2>
@@ -56,6 +61,7 @@ const PopupApp = () => {
             <div className="controls">
                 <button className="button" onClick={handleOnShuffle}>Shuffle</button>
                 <button className="button" onClick={handleOnClear}>Clear</button>
+                <button className="button" onClick={handleOnReload}>Reload</button>
             </div>
         </div>
     );

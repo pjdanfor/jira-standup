@@ -2,7 +2,7 @@
     "compilerOptions": {
         "allowSyntheticDefaultImports": true,
         "resolveJsonModule": true,
-        "outDir": "./dist/",
+        "outDir": "./extension/",
         "sourceMap": true,
         "strict": true,
         "noImplicitReturns": true,

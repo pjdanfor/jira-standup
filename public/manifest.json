@@ -1,5 +1,5 @@
 {
-    "name": "Jira Standup Extension",
+    "name": "Jira Standup",
     "description": "Chrome Extension for running standup within Jira!",
     "manifest_version": 3,
     "version": "1.0.0",

@@ -10,10 +10,10 @@ const config = {
     maxAssetSize: 512000
   },
   entry: {
-    popup: path.join(__dirname, "src/popup.tsx"),
-    content: path.join(__dirname, "src/content.tsx"),
+    popup: path.join(__dirname, "src/popup/popup.tsx"),
+    content: path.join(__dirname, "src/content/content.tsx"),
   },
-  output: { path: path.join(__dirname, "dist"), filename: "[name].js" },
+  output: { path: path.join(__dirname, "extension"), filename: "[name].js" },
   module: {
     rules: [
       {
@@ -66,7 +66,7 @@ const config = {
     extensions: [".js", ".jsx", ".tsx", ".ts"]
   },
   devServer: {
-    static: "./dist",
+    static: "./extension",
   },
   plugins: [
     new CopyPlugin({

@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import ContentApp from "./ContentApp";
-import { waitForElement } from "./utils";
+import { waitForElement } from "../utils";
 import "./content.css";
 
 (async () => {

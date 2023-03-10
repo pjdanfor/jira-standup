@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Attendee, MessageTypes } from "./types";
-import attendeesJson from "./attendees.json";
+import { Attendee, MessageTypes } from "../types";
+import attendeesJson from "../data/attendees.json";
 
 const ContentApp = () => {
     const [hidden, setHidden] = useState(true);
@@ -67,7 +67,7 @@ const ContentApp = () => {
     }, []);
 
     useEffect(() => {
-        chrome.runtime.onMessage.addListener((message: MessageTypes) => {
+        const listener = (message: MessageTypes) => {
             switch (message.type) {
                 case "CLEAR":
                     clear(attendees);
@@ -78,7 +78,11 @@ const ContentApp = () => {
                 default:
                     break;
             }
-        });
+        };
+        chrome.runtime.onMessage.addListener(listener);
+        return () => {
+            chrome.runtime.onMessage.removeListener(listener);
+        };
     }, [attendees]);
 
     useEffect(() => {
