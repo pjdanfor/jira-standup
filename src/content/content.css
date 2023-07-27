@@ -24,12 +24,17 @@
     margin-top: 0;
     margin-right: 5px;
     padding: 10px;
-    border-radius: 35%;
+    border-radius: 4px;
 }
 
 #jira-standup li:hover, #jira-standup li.satDown {
     color: #FFFFFF;
     background-color: rgb(0, 82, 204);
+}
+
+#jira-standup li.hasLinger {
+    color: #FFFFFF;
+    background-color: rgb(173, 3, 252);
 }
 
 #jira-standup img {

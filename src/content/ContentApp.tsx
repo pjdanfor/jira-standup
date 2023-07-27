@@ -13,12 +13,23 @@ const ContentApp = () => {
             }
             return a;
         });
-        setAttendees(temp);
-        chrome.storage.local.set({ attendees: temp });
+        storeAttendees(temp);
 
         const url = new URL(window.location.href);
         url.searchParams.set('assignee', attendee.id);
         window.location.href = url.toString();
+    };
+
+    const onAttendeeRightClick = (e: React.MouseEvent, attendee: Attendee) => {
+        e.preventDefault();
+        const temp = attendees.map(a => {
+            if (a.id === attendee.id) {
+                a.hasLinger = !a.hasLinger;
+            }
+            return a;
+        });
+
+        storeAttendees(temp);
     };
 
     const shuffleAttendees = (attendeesToShuffle: Attendee[]) => {
@@ -27,17 +38,22 @@ const ContentApp = () => {
             const j = Math.floor(Math.random() * (i + 1));
             [temp[i], temp[j]] = [temp[j], temp[i]];
         }
-        setAttendees(temp);
-        chrome.storage.local.set({ attendees: temp });
+        storeAttendees(temp);
+    };
+
+    const storeAttendees = (attendeesToStore: Attendee[]) => {
+        setAttendees(attendeesToStore);
+        chrome.storage.local.set({ attendees: attendeesToStore });
     };
 
     const clear = (attendeesToClear: Attendee[]) => {
         const temp = attendeesToClear.map(a => ({
             ...a,
-            satDown: false
+            satDown: false,
+            hasLinger: false
         }));
-        setAttendees(temp);
-        chrome.storage.local.set({ attendees: temp });
+
+        storeAttendees(temp);
 
         const url = new URL(window.location.href);
         url.hash = '';
@@ -46,8 +62,11 @@ const ContentApp = () => {
     };
 
     const attendeesMarkup = attendees.map(a => {
+        const hasSatDown = a.satDown ? "satDown" : "";
+        const hasLinger = a.hasLinger ? "hasLinger" : "";
+
         return (
-            <li key={a.id} className={a.satDown ? "satDown" : ""} onClick={() => onAttendeeClick(a)}>
+            <li key={a.id} className={`${hasSatDown} ${hasLinger}`} onClick={() => onAttendeeClick(a)} onContextMenu={(e) => onAttendeeRightClick(e, a)}>
                 <img src={a.avatarUrl} className={"avatar"} />
                 {a.name}
             </li>
