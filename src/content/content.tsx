@@ -7,7 +7,7 @@ import "./content.css";
 (async () => {
     try {
         const isOldJiraVersion = document.body.classList.contains('ghx-agile')
-        const controls = isOldJiraVersion ? await waitForElement("#ghx-controls", 5000) : await waitForElement(`[data-test-id="software-board.header.controls-bar"]`, 5000)
+        const controls = isOldJiraVersion ? await waitForElement("#ghx-controls", 5000) : await waitForElement(`[data-testid="software-board.header.controls-bar"]`, 5000)
         if (controls) {
             const rootElement = document.createElement("div");
             rootElement.id = "jira-standup";
