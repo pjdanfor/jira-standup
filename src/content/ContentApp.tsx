@@ -17,12 +17,12 @@ const ContentApp = () => {
 
         storeAttendees(temp);
 
-        var checkbox = document.getElementById('assignee-' + activeAttendee);
+        let checkbox = document.getElementById('assignee-' + activeAttendee);
         if (checkbox) {
             checkbox.click();
         } else {
             document.getElementById('assignee-show-more')?.click();
-            var button = document.getElementById(activeAttendee);
+            let button = document.getElementById(activeAttendee);
             button?.click();
             document.getElementById('assignee-show-more')?.click();
         }
@@ -33,7 +33,7 @@ const ContentApp = () => {
                 checkbox.click();
             } else {
                 document.getElementById('assignee-show-more')?.click();
-                button = document.getElementById(attendee.id);
+                let button = document.getElementById(attendee.id);
                 button?.click();
                 document.getElementById('assignee-show-more')?.click();
             }
@@ -84,12 +84,12 @@ const ContentApp = () => {
 
         storeAttendees(temp);
 
-        var checkbox = document.getElementById('assignee-' + activeAttendee);
+        let checkbox = document.getElementById('assignee-' + activeAttendee);
         if (checkbox) {
             checkbox.click();
         } else {
             document.getElementById('assignee-show-more')?.click();
-            var button = document.getElementById(activeAttendee);
+            let button = document.getElementById(activeAttendee);
             button?.click();
             document.getElementById('assignee-show-more')?.click();
         }
