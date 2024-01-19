@@ -5,6 +5,7 @@ const ContentApp = () => {
     const [hidden, setHidden] = useState(true);
     const [shuffling, setShuffling] = useState(false);
     const [attendees, setAttendees] = useState<Attendee[]>([]);
+    const [activeAttendee, setActiveAttendee] = useState<string>('');
 
     const onAttendeeClick = (attendee: Attendee) => {
         const temp = attendees.map(a => {
@@ -16,9 +17,9 @@ const ContentApp = () => {
 
         storeAttendees(temp);
 
-        const url = new URL(window.location.href);
-        url.searchParams.set('assignee', attendee.id);
-        window.location.href = url.toString();
+        document.getElementById('assignee-' + activeAttendee)?.click();
+        document.getElementById('assignee-' + attendee.id)?.click();
+        setActiveAttendee(attendee.id);
     };
 
     const onAttendeeRightClick = (e: React.MouseEvent, attendee: Attendee) => {
@@ -64,10 +65,8 @@ const ContentApp = () => {
 
         storeAttendees(temp);
 
-        const url = new URL(window.location.href);
-        url.hash = '';
-        url.search = '';
-        window.location.href = url.toString();
+        document.getElementById('assignee-' + activeAttendee)?.click();
+        setActiveAttendee('');
     };
 
     const attendeesMarkup = attendees.map(a => {
