@@ -3,42 +3,38 @@ import { Attendee, MessageTypes } from "../types";
 
 const ContentApp = () => {
     const [hidden, setHidden] = useState(true);
-    const [shuffling, setShuffling] = useState(false);
+    const [shuffling, setShuffling] = useState<boolean>(false);
     const [attendees, setAttendees] = useState<Attendee[]>([]);
-    const [activeAttendee, setActiveAttendee] = useState<string>('');
+    const [activeAttendeeId, setActiveAttendeeId] = useState<string>('');
+
+    const clickAttendee = (attendeeId: string) => {
+        const checkbox = document.getElementById('assignee-' + attendeeId);
+        if (checkbox) {
+            checkbox.click();
+        } else {
+            document.getElementById('assignee-show-more')?.click();
+            document.getElementById(attendeeId)?.click();
+            document.getElementById('assignee-show-more')?.click();
+        }
+    };
 
     const onAttendeeClick = (attendee: Attendee) => {
+        const newAttendeeId = attendee.id;
+        if (activeAttendeeId === newAttendeeId) {
+            return;
+        }
+
         const temp = attendees.map(a => {
-            if (a.id === attendee.id) {
+            if (a.id === newAttendeeId) {
                 a.satDown = true;
             }
             return a;
         });
 
         storeAttendees(temp);
-
-        let checkbox = document.getElementById('assignee-' + activeAttendee);
-        if (checkbox) {
-            checkbox.click();
-        } else {
-            document.getElementById('assignee-show-more')?.click();
-            let button = document.getElementById(activeAttendee);
-            button?.click();
-            document.getElementById('assignee-show-more')?.click();
-        }
-
-        if (activeAttendee !== attendee.id) {
-            checkbox = document.getElementById('assignee-' + attendee.id);
-            if (checkbox) {
-                checkbox.click();
-            } else {
-                document.getElementById('assignee-show-more')?.click();
-                let button = document.getElementById(attendee.id);
-                button?.click();
-                document.getElementById('assignee-show-more')?.click();
-            }
-            setActiveAttendee(attendee.id);
-        }
+        clickAttendee(activeAttendeeId);
+        clickAttendee(newAttendeeId);
+        setActiveAttendeeId(newAttendeeId);
     };
 
     const onAttendeeRightClick = (e: React.MouseEvent, attendee: Attendee) => {
@@ -83,17 +79,8 @@ const ContentApp = () => {
         }));
 
         storeAttendees(temp);
-
-        let checkbox = document.getElementById('assignee-' + activeAttendee);
-        if (checkbox) {
-            checkbox.click();
-        } else {
-            document.getElementById('assignee-show-more')?.click();
-            let button = document.getElementById(activeAttendee);
-            button?.click();
-            document.getElementById('assignee-show-more')?.click();
-        }
-        setActiveAttendee('');
+        document.querySelector<HTMLElement>('[data-testid="filters.ui.filters.clear-button.ak-button"] button')?.click();
+        setActiveAttendeeId('');
     };
 
     const attendeesMarkup = attendees.map(a => {
