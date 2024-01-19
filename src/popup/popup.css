@@ -1,7 +1,6 @@
 body {
     margin: 0;
     width: 260px;
-    height: 120px;
 }
 
 label {
@@ -10,14 +9,87 @@ label {
 
 .container {
     text-align: center;
+    padding: 10px;
+}
+
+input[type="checkbox"] {
+    box-sizing: border-box;
+    padding: 0;
+}
+
+.checkbox__input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkbox__label {
+    position: relative;
+    display: inline-block;
+    padding-left: 24px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.checkbox__label::before,
+.checkbox__label::after {
+    position: absolute;
+    content: "";
+    display: inline-block;
+}
+
+.checkbox__label::before {
+    height: 20px;
+    width: 20px;
+    background: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    left: 0px;
+    top: 0px;
+    transition: border-color ease-in-out 0.15s;
+}
+
+.checkbox__label::after {
+    left: 7px;
+    top: 3px;
+    width: 5px;
+    height: 10px;
+    border: solid #000000;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox__input + .checkbox__label::after {
+    content: "";
+    display: none;
+}
+
+.checkbox__input:checked + .checkbox__label::after {
+    display: inline-block;
+}
+
+.checkbox__input:hover + .checkbox__label::before,
+.checkbox__input:focus + .checkbox__label::before {
+    border-color: #0070BF;
 }
 
 .controls {
     margin-top: 20px;
 }
 
-.controls .button + .button {
+.controls .button + .button, .manage-attendees .button + .button {
     margin-left: 5px;
+}
+
+.manage-attendees {
+    margin-top: 15px;
+}
+
+input[type="file"] {
+    display: none;
 }
 
 .button {

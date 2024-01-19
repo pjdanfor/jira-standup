@@ -6,7 +6,11 @@ interface Shuffle {
     type: "SHUFFLE"
 }
 
-export type MessageTypes = Clear | Shuffle;
+interface AttendeesUpdated {
+    type: "ATTENDEES_UPDATED"
+}
+
+export type MessageTypes = Clear | Shuffle | AttendeesUpdated;
 
 export type Attendee = {
     id: string,
