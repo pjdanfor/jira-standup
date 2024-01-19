@@ -5,6 +5,7 @@ const ContentApp = () => {
     const [hidden, setHidden] = useState(true);
     const [shuffling, setShuffling] = useState(false);
     const [attendees, setAttendees] = useState<Attendee[]>([]);
+    const [activeAttendee, setActiveAttendee] = useState<string>('');
 
     const onAttendeeClick = (attendee: Attendee) => {
         const temp = attendees.map(a => {
@@ -16,9 +17,28 @@ const ContentApp = () => {
 
         storeAttendees(temp);
 
-        const url = new URL(window.location.href);
-        url.searchParams.set('assignee', attendee.id);
-        window.location.href = url.toString();
+        let checkbox = document.getElementById('assignee-' + activeAttendee);
+        if (checkbox) {
+            checkbox.click();
+        } else {
+            document.getElementById('assignee-show-more')?.click();
+            let button = document.getElementById(activeAttendee);
+            button?.click();
+            document.getElementById('assignee-show-more')?.click();
+        }
+
+        if (activeAttendee !== attendee.id) {
+            checkbox = document.getElementById('assignee-' + attendee.id);
+            if (checkbox) {
+                checkbox.click();
+            } else {
+                document.getElementById('assignee-show-more')?.click();
+                let button = document.getElementById(attendee.id);
+                button?.click();
+                document.getElementById('assignee-show-more')?.click();
+            }
+            setActiveAttendee(attendee.id);
+        }
     };
 
     const onAttendeeRightClick = (e: React.MouseEvent, attendee: Attendee) => {
@@ -64,10 +84,16 @@ const ContentApp = () => {
 
         storeAttendees(temp);
 
-        const url = new URL(window.location.href);
-        url.hash = '';
-        url.search = '';
-        window.location.href = url.toString();
+        let checkbox = document.getElementById('assignee-' + activeAttendee);
+        if (checkbox) {
+            checkbox.click();
+        } else {
+            document.getElementById('assignee-show-more')?.click();
+            let button = document.getElementById(activeAttendee);
+            button?.click();
+            document.getElementById('assignee-show-more')?.click();
+        }
+        setActiveAttendee('');
     };
 
     const attendeesMarkup = attendees.map(a => {
