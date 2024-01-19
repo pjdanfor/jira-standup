@@ -1,15 +1,21 @@
 #jira-standup .container {
-    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 #jira-standup .hidden {
     display: none;
 }
 
-#jira-standup ul {
+#jira-standup .group {
     list-style-type: none;
     margin: 0;
     padding: 0;
+}
+
+#jira-standup .group.shuffling li .avatar,
+#jira-standup .group.shuffling li .name {
+    opacity: 0;
+    transform: scale(-1, 0);
 }
 
 #jira-standup .group:after {
@@ -18,7 +24,7 @@
     clear: both;
 }
 
-#jira-standup li {
+#jira-standup .group li {
     float: left;
     cursor: pointer;
     margin-top: 0;
@@ -27,23 +33,25 @@
     border-radius: 4px;
 }
 
-#jira-standup li:hover, #jira-standup li.satDown {
+#jira-standup .group li:hover, #jira-standup .group li.satDown {
     color: #FFFFFF;
     background-color: rgb(0, 82, 204);
 }
 
-#jira-standup li.hasLinger {
+#jira-standup .group li.hasLinger {
     color: #FFFFFF;
     background-color: rgb(173, 3, 252);
 }
 
-#jira-standup img {
-    padding-right: 5px;
-}
-
-#jira-standup .avatar {
+#jira-standup .group li .avatar {
     border-radius: 50%;
     width: 30px;
     height: 30px;
     vertical-align: middle;
+    padding-right: 5px;
+}
+
+#jira-standup .group li .avatar,
+#jira-standup .group li .name {
+    transition: transform 175ms ease-in-out, opacity 175ms ease-in-out;
 }

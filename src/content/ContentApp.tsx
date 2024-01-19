@@ -4,6 +4,7 @@ import attendeesJson from "../data/attendees.json";
 
 const ContentApp = () => {
     const [hidden, setHidden] = useState(true);
+    const [shuffling, setShuffling] = useState(false);
     const [attendees, setAttendees] = useState<Attendee[]>([]);
 
     const onAttendeeClick = (attendee: Attendee) => {
@@ -13,6 +14,7 @@ const ContentApp = () => {
             }
             return a;
         });
+
         storeAttendees(temp);
 
         const url = new URL(window.location.href);
@@ -33,17 +35,25 @@ const ContentApp = () => {
     };
 
     const shuffleAttendees = (attendeesToShuffle: Attendee[]) => {
-        const temp = attendeesToShuffle.slice();
-        for (let i = temp.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [temp[i], temp[j]] = [temp[j], temp[i]];
-        }
-        storeAttendees(temp);
+        setShuffling(true);
+        setTimeout(() => {
+            const temp = attendeesToShuffle.slice();
+            for (let i = temp.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [temp[i], temp[j]] = [temp[j], temp[i]];
+            }
+            storeAttendees(temp);
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    setShuffling(false);
+                });
+            });
+        }, 175);
     };
 
-    const storeAttendees = (attendeesToStore: Attendee[]) => {
+    const storeAttendees = async (attendeesToStore: Attendee[]) => {
         setAttendees(attendeesToStore);
-        chrome.storage.local.set({ attendees: attendeesToStore });
+        await chrome.storage.local.set({ attendees: attendeesToStore });
     };
 
     const clear = (attendeesToClear: Attendee[]) => {
@@ -67,8 +77,8 @@ const ContentApp = () => {
 
         return (
             <li key={a.id} className={`${hasSatDown} ${hasLinger}`} onClick={() => onAttendeeClick(a)} onContextMenu={(e) => onAttendeeRightClick(e, a)}>
-                <img src={a.avatarUrl} className={"avatar"} />
-                {a.name}
+                <img src={a.avatarUrl} className="avatar" />
+                <span className="name">{a.name}</span>
             </li>
         );
     });
@@ -86,7 +96,7 @@ const ContentApp = () => {
     }, []);
 
     useEffect(() => {
-        const listener = (message: MessageTypes) => {
+        const listener = async (message: MessageTypes) => {
             switch (message.type) {
                 case "CLEAR":
                     clear(attendees);
@@ -94,6 +104,9 @@ const ContentApp = () => {
                 case "SHUFFLE":
                     shuffleAttendees(attendees);
                     break;
+                case "ATTENDEES_UPDATED":
+                    const attendeesResult = await chrome.storage.local.get("attendees");
+                    setAttendees(attendeesResult.attendees);
                 default:
                     break;
             }
@@ -116,14 +129,16 @@ const ContentApp = () => {
                     ...a,
                     satDown: false
                 }));
+                await storeAttendees(storageAttendees);
+            } else {
+                setAttendees(storageAttendees);
             }
-            setAttendees(storageAttendees);
         })();
     }, []);
 
     return (
         <div className={hidden ? "container hidden" : "container"}>
-            <ul className="group">{attendeesMarkup}</ul>
+            <ul className={shuffling ? "group shuffling" : "group"}>{attendeesMarkup}</ul>
         </div>
     );
 };
