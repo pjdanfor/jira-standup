@@ -9,7 +9,7 @@ label {
 
 .container {
     text-align: center;
-    padding: 10px;
+    padding: 10px 10px 25px;
 }
 
 input[type="checkbox"] {
@@ -82,6 +82,11 @@ input[type="checkbox"] {
 
 .controls .button + .button, .manage-attendees .button + .button {
     margin-left: 5px;
+}
+
+.controls .button,
+.manage-attendees .button {
+    width: calc(50% - 5px);
 }
 
 .manage-attendees {
