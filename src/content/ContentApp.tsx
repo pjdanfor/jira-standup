@@ -1,25 +1,40 @@
 import React, { useEffect, useState } from "react";
 import { Attendee, MessageTypes } from "../types";
-import attendeesJson from "../data/attendees.json";
 
 const ContentApp = () => {
     const [hidden, setHidden] = useState(true);
-    const [shuffling, setShuffling] = useState(false);
+    const [shuffling, setShuffling] = useState<boolean>(false);
     const [attendees, setAttendees] = useState<Attendee[]>([]);
+    const [activeAttendeeId, setActiveAttendeeId] = useState<string>('');
+
+    const clickAttendee = (attendeeId: string) => {
+        const checkbox = document.getElementById('assignee-' + attendeeId);
+        if (checkbox) {
+            checkbox.click();
+        } else {
+            document.getElementById('assignee-show-more')?.click();
+            document.getElementById(attendeeId)?.click();
+            document.getElementById('assignee-show-more')?.click();
+        }
+    };
 
     const onAttendeeClick = (attendee: Attendee) => {
+        const newAttendeeId = attendee.id;
+        if (activeAttendeeId === newAttendeeId) {
+            return;
+        }
+
         const temp = attendees.map(a => {
-            if (a.id === attendee.id) {
+            if (a.id === newAttendeeId) {
                 a.satDown = true;
             }
             return a;
         });
 
         storeAttendees(temp);
-
-        const url = new URL(window.location.href);
-        url.searchParams.set('assignee', attendee.id);
-        window.location.href = url.toString();
+        clickAttendee(activeAttendeeId);
+        clickAttendee(newAttendeeId);
+        setActiveAttendeeId(newAttendeeId);
     };
 
     const onAttendeeRightClick = (e: React.MouseEvent, attendee: Attendee) => {
@@ -64,11 +79,8 @@ const ContentApp = () => {
         }));
 
         storeAttendees(temp);
-
-        const url = new URL(window.location.href);
-        url.hash = '';
-        url.search = '';
-        window.location.href = url.toString();
+        document.querySelector<HTMLElement>('[data-testid="filters.ui.filters.clear-button.ak-button"] button')?.click();
+        setActiveAttendeeId('');
     };
 
     const attendeesMarkup = attendees.map(a => {
@@ -125,10 +137,13 @@ const ContentApp = () => {
             const attendeesResult = await chrome.storage.local.get("attendees");
             let storageAttendees = attendeesResult.attendees;
             if (!storageAttendees) {
-                storageAttendees = attendeesJson.map(a => ({
-                    ...a,
-                    satDown: false
-                }));
+                storageAttendees = [{
+                    id: "unassigned",
+                    name: "Unassigned",
+                    avatarUrl: "https://via.placeholder.com/48x48",
+                    satDown: false,
+                    hasLinger: false
+                }];
                 await storeAttendees(storageAttendees);
             } else {
                 setAttendees(storageAttendees);

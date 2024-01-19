@@ -50,11 +50,6 @@ const PopupApp = () => {
         sendMessage({ type: "CLEAR" });
     };
 
-    const handleOnReload = () => {
-        chrome.storage.local.set({ attendees: null });
-        chrome.runtime.reload();
-    };
-
     const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const fileList = e.target.files;
         if (!fileList) {
@@ -65,7 +60,7 @@ const PopupApp = () => {
             return;
         }
         const data = await file.text();
-        const attendees = JSON.parse(data);
+        let attendees = JSON.parse(data);
         if (!(attendees instanceof Array)) {
             console.log("Attendees import must be an array of valid attendees");
             return;
@@ -75,6 +70,11 @@ const PopupApp = () => {
             console.log("Attendees import must be an array of attendee objects with id, name, and avatarUrl");
             return;
         }
+        attendees = attendees.map(a => ({
+            ...a,
+            satDown: false,
+            hasLinger: false
+        }));
         chrome.storage.local.set({ attendees });
         sendMessage({ type: "ATTENDEES_UPDATED" });
     };
@@ -117,7 +117,6 @@ const PopupApp = () => {
             <div className="controls">
                 <button className="button" onClick={handleOnShuffle}>Shuffle</button>
                 <button className="button" onClick={handleOnClear}>Clear</button>
-                <button className="button" onClick={handleOnReload}>Reload</button>
             </div>
             <div className="manage-attendees">
                 <input type="file" name="importedAttendees" id="importedAttendees" accept=".json" onChange={handleImport} />
