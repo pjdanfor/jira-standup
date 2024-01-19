@@ -65,7 +65,7 @@ const PopupApp = () => {
             return;
         }
         const data = await file.text();
-        const attendees = JSON.parse(data);
+        let attendees = JSON.parse(data);
         if (!(attendees instanceof Array)) {
             console.log("Attendees import must be an array of valid attendees");
             return;
@@ -75,6 +75,11 @@ const PopupApp = () => {
             console.log("Attendees import must be an array of attendee objects with id, name, and avatarUrl");
             return;
         }
+        attendees = attendees.map(a => ({
+            ...a,
+            satDown: false,
+            hasLinger: false
+        }));
         chrome.storage.local.set({ attendees });
         sendMessage({ type: "ATTENDEES_UPDATED" });
     };

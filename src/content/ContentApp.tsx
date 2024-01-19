@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Attendee, MessageTypes } from "../types";
-import attendeesJson from "../data/attendees.json";
 
 const ContentApp = () => {
     const [hidden, setHidden] = useState(true);
@@ -125,10 +124,13 @@ const ContentApp = () => {
             const attendeesResult = await chrome.storage.local.get("attendees");
             let storageAttendees = attendeesResult.attendees;
             if (!storageAttendees) {
-                storageAttendees = attendeesJson.map(a => ({
-                    ...a,
-                    satDown: false
-                }));
+                storageAttendees = [{
+                    id: "unassigned",
+                    name: "Unassigned",
+                    avatarUrl: "https://via.placeholder.com/48x48",
+                    satDown: false,
+                    hasLinger: false
+                }];
                 await storeAttendees(storageAttendees);
             } else {
                 setAttendees(storageAttendees);
