@@ -17,9 +17,28 @@ const ContentApp = () => {
 
         storeAttendees(temp);
 
-        document.getElementById('assignee-' + activeAttendee)?.click();
-        document.getElementById('assignee-' + attendee.id)?.click();
-        setActiveAttendee(attendee.id);
+        var checkbox = document.getElementById('assignee-' + activeAttendee);
+        if (checkbox) {
+            checkbox.click();
+        } else {
+            document.getElementById('assignee-show-more')?.click();
+            var button = document.getElementById(activeAttendee);
+            button?.click();
+            document.getElementById('assignee-show-more')?.click();
+        }
+
+        if (activeAttendee !== attendee.id) {
+            checkbox = document.getElementById('assignee-' + attendee.id);
+            if (checkbox) {
+                checkbox.click();
+            } else {
+                document.getElementById('assignee-show-more')?.click();
+                button = document.getElementById(attendee.id);
+                button?.click();
+                document.getElementById('assignee-show-more')?.click();
+            }
+            setActiveAttendee(attendee.id);
+        }
     };
 
     const onAttendeeRightClick = (e: React.MouseEvent, attendee: Attendee) => {
@@ -65,7 +84,15 @@ const ContentApp = () => {
 
         storeAttendees(temp);
 
-        document.getElementById('assignee-' + activeAttendee)?.click();
+        var checkbox = document.getElementById('assignee-' + activeAttendee);
+        if (checkbox) {
+            checkbox.click();
+        } else {
+            document.getElementById('assignee-show-more')?.click();
+            var button = document.getElementById(activeAttendee);
+            button?.click();
+            document.getElementById('assignee-show-more')?.click();
+        }
         setActiveAttendee('');
     };
 
